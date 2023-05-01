@@ -5,16 +5,16 @@ on:
     types: [published]
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       # Setup .npmrc file to publish to npm
       - uses: actions/setup-node@v3
         with:
-          node-version: '19.X'
+          node-version: 19
           registry-url: 'https://registry.npmjs.org'
-      - run: npm ci
+      - run: npm i
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_HAM_PUBLISH_TOKEN }}
