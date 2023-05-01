@@ -1,4 +1,4 @@
-# @ham/ham
+# @harvardartmuseums/ham
 
 A barebones server-side Node.js library for the Harvard Art Museums API.
 
@@ -8,13 +8,13 @@ A barebones server-side Node.js library for the Harvard Art Museums API.
 
 ### Installation
 ```
-npm install @ham/ham
+npm install @harvardartmuseums/ham
 ```
 
 ### Basic Example
 
 ```javascript
-    const HAM = require('@ham/ham');
+    const HAM = require('@harvardartmuseums/ham');
 
     let api = new HAM(API_KEY);
     let criteria = {
