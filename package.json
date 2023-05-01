@@ -1,5 +1,5 @@
 {
-  "name": "@ham/ham",
+  "name": "@harvardartmuseums/ham",
   "version": "1.0.0",
   "description": "A Node.js library for the HAM API.",
   "homepage": "https://hvrd.art/api",
