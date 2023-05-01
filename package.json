@@ -1,0 +1,25 @@
+{
+  "name": "@ham/ham",
+  "version": "1.0.0",
+  "description": "A Node.js library for the HAM API.",
+  "homepage": "https://hvrd.art/api",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harvardartmuseums/ham-node-js.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "HAM"
+  ],
+  "author": "HAM DIET",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/harvardartmuseums/ham-node-js/issues"
+  },  
+  "engines": {
+    "node": ">=18"
+  }
+}
