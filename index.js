@@ -64,6 +64,31 @@ module.exports = class HAM {
                     .then(response => response);
     }
 
+    get(endpoint, id) {
+        if (ENDPOINTS[endpoint]) {
+            return this._fetch(this._makeGetUrl(ENDPOINTS[endpoint], id)); 
+        } else {
+            return {'error': 'invalid endpoint'};
+        }
+    }
+
+    search(endpoint, parameters, aggregations) {
+        if (ENDPOINTS[endpoint]) {
+            return this._fetch(this._makeSearchUrl(ENDPOINTS[endpoint], parameters, aggregations)); 
+        } else {
+            return {'error': 'invalid endpoint'};
+        }
+    }
+    
+    Activities = {
+        get: (id) => { 
+            return this._fetch(this._makeGetUrl(ENDPOINTS.activities, id)); 
+        },     
+        search: (parameters, aggregations) => { 
+            return this._fetch(this._makeSearchUrl(ENDPOINTS.activities, parameters, aggregations)); 
+        }
+    }
+
     Images = {
         get: (id) => { 
             return this._fetch(this._makeGetUrl(ENDPOINTS.images, id)); 
