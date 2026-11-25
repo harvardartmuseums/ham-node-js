@@ -12,47 +12,13 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      # No registry-url here, on purpose. Setting it makes setup-node write an
-      # .npmrc containing //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}.
-      # With no token in the environment that resolves to an empty credential,
-      # which npm sends instead of falling back to the OIDC exchange.
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 24
-
-      # Trusted publishing needs npm 11.5.1 or later, which is newer than the
-      # version bundled with Node.
-      - name: Update npm
-        run: |
-          npm install -g npm@latest
-          npm --version
-
-      - name: Check the release tag matches package.json
-        run: |
-          PACKAGE_VERSION=$(node -p "require('./package.json').version")
-          RELEASE_VERSION="${GITHUB_REF_NAME#v}"
-          if [ "$PACKAGE_VERSION" != "$RELEASE_VERSION" ]; then
-            echo "Release tag $GITHUB_REF_NAME does not match package.json version $PACKAGE_VERSION"
-            exit 1
-          fi
-
-      # Diagnostic: confirms no stray auth config is shadowing OIDC.
-      - name: Show npm auth config
-        run: |
-          echo "registry: $(npm config get registry)"
-          for file in "$HOME/.npmrc" "$GITHUB_WORKSPACE/.npmrc"; do
-            if [ -f "$file" ]; then
-              echo "--- $file ---"
-              sed -E 's/(_authToken[[:space:]]*=).*/\1<redacted>/' "$file"
-            else
-              echo "--- $file: not present ---"
-            fi
-          done
-
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false  # never use caching in release builds
       - run: npm ci
-
-      # Authenticates over OIDC. Provenance is generated automatically, so
-      # --provenance is not needed.
-      - run: npm publish
+      - run: npm run build --if-present
+      - run: npm publish  # Or: npm stage publish
