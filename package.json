@@ -1,24 +1,44 @@
 {
   "name": "@harvardartmuseums/ham",
-  "version": "1.0.3",
-  "description": "A Node.js library for the HAM API.",
+  "version": "2.0.0",
+  "description": "A Node.js library for the Harvard Art Museums API.",
   "homepage": "https://hvrd.art/api",
   "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    }
+  },
+  "files": [
+    "index.js",
+    "index.d.ts"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/harvardartmuseums/ham-node-js.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "check:types": "tsc --noEmit --strict index.d.ts"
   },
   "keywords": [
-    "HAM"
+    "HAM",
+    "harvard art museums",
+    "api",
+    "museum",
+    "collection",
+    "art",
+    "iiif"
   ],
   "author": "HAM DIET",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/harvardartmuseums/ham-node-js/issues"
-  },  
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=18"
   }
