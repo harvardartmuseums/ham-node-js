@@ -13,11 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # Setup .npmrc file to publish to npm
+
+      # No registry-url here, on purpose. Setting it makes setup-node write an
+      # .npmrc containing //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}.
+      # With no token in the environment that resolves to an empty credential,
+      # which npm sends instead of falling back to the OIDC exchange.
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          registry-url: 'https://registry.npmjs.org'
 
       # Trusted publishing needs npm 11.5.1 or later, which is newer than the
       # version bundled with Node.
@@ -35,8 +38,21 @@ jobs:
             exit 1
           fi
 
+      # Diagnostic: confirms no stray auth config is shadowing OIDC.
+      - name: Show npm auth config
+        run: |
+          echo "registry: $(npm config get registry)"
+          for file in "$HOME/.npmrc" "$GITHUB_WORKSPACE/.npmrc"; do
+            if [ -f "$file" ]; then
+              echo "--- $file ---"
+              sed -E 's/(_authToken[[:space:]]*=).*/\1<redacted>/' "$file"
+            else
+              echo "--- $file: not present ---"
+            fi
+          done
+
       - run: npm ci
 
-      # No NODE_AUTH_TOKEN: this authenticates over OIDC. Provenance is generated
-      # automatically, so --provenance is not needed.
+      # Authenticates over OIDC. Provenance is generated automatically, so
+      # --provenance is not needed.
       - run: npm publish
